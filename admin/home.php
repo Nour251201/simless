@@ -20,11 +20,11 @@ $login= $_SESSION['username']; */
    
 	<div id="menu">
 	<ul>
-	<li><a href="compte.php">compte</a></li>  
+	<li><a href="Account.php">compte</a></li>  
     <li><a href="org.php">organisateur</a></li>
 	<li><a href="collab.php">Collaborateur</a></li>
 	<li><a href="event.php">Event</a></li>  
-	<li><a href="calender.php">calendrier</a></li>  
+	<li><a href="index.php">calendrier</a></li>  
 	<li><a href="../logout.php">Déconnexion</a></li>
 	</ul>
 	</div>

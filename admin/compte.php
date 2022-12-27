@@ -42,6 +42,12 @@ echo $donne['id'];
 				<input type="submit"   name="envoi" value="modifier"/>				
 			</fieldset>			
 		</form>
+
+
+
+
+
+		
 <?php	
 $ch="";	
 if(isset($_POST['envoi'])){

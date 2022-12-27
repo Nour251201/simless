@@ -1,6 +1,6 @@
 <?php 
 include("../inc/conn.inc.php");
-session_start();// d�marrer une session
+session_start();// démarrer une session
 $nom= $_SESSION['name'];
 $user= $_SESSION['username'];
 ?>
@@ -37,7 +37,7 @@ $donne=mysqli_fetch_assoc($res);
 if($pass==$donne['password']){
 $sql="UPDATE user SET password= '$pass1' WHERE username='$user'";
 $res=mysqli_query($conn,$sql);
-echo'mot de passe modifi� avec succes';
+echo'mot de passe modifié avec succes';
 }
 else echo'mote passe incorrecte';
 }

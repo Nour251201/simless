@@ -62,10 +62,13 @@
 			</div>
 			<div class="col-auto">
 			Select image to upload:
-			<input type="file" name="fileToUpload" id="fileToUpload" value="<?php if(isset($photo)) echo $photo; ?>" ><!--nom-->	
+			<input type="file" name="fileToUpload" id="fileToUpload" value="<?php if(isset($photo))  echo  $photo; ?>" placeholder="photo" />
+			 
+
+
 		</div>
 			<div class="col-auto">
-			<input type="text" name="adresse" class="form-control" value="<?php if(isset($adresse)) echo $adresse; ?>" placeholder="Entrer une adresse" />
+			<input type="text" name="adresse" class="form-control" value="<?php if(isset($adresse)) echo $adresse; ?>"  />
 			</div>
 			<div class="col-auto">
 			<?php
@@ -118,7 +121,7 @@
 					<td><?php echo $ligne['password']; ?></td>
 					<td><?php echo $ligne['email']; ?></td>
 					<td><?php echo $ligne['tel']; ?></td>
-					<td><?php echo "<img src=".$path.$ligne['photo'].">" ?></td>
+					<td><?php echo '<img  style="width:100px;" src="'. $ligne['photo'].'">'?></td>
 					<td><?php echo $ligne['adresse']; ?></td>
 					<td style="width: 10%">
 						<!-- Creating action icons for each record displayed in the table -->

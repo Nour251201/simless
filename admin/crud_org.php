@@ -13,11 +13,12 @@ $maj = false;
 //Code for saving user's data
 //Processing form data when form is submitted
 if(isset($_POST['enregistrer'])){
-	$file1 = rand(1000,100000)."-".$_FILES['fileToUpload']['name'];
   $file_loc = $_FILES['fileToUpload']['tmp_name'];
    $file_size = $_FILES['fileToUpload']['size'];
  $file_type = $_FILES['fileToUpload']['type'];
  $folder="../media/";
+ $file1 = $folder.$_FILES['fileToUpload']['name'];
+
  /* new file size in KB */
  $new_size = $file_size/1024;  
 /* new file size in KB */
@@ -39,10 +40,11 @@ if(isset($_POST['enregistrer'])){
 		$adresse=$_POST['adresse'];
 		 //insert query
 		$sql="INSERT INTO user (`username`,`password`,`profil`,`name`,`email`,`tel`,`photo`,`adresse`) VALUES('$username', '$password', 'org','$name','$email','$tel','$photo','$adresse')";
-		$res=mysqli_query($conn,$sql);
-		if(move_uploaded_file($file_loc,$folder.$final_file))
+		
+		if(move_uploaded_file($file_loc, $folder.$final_file)&& ($conn->query($sql) === TRUE))
 		{
-		$sql1="INSERT INTO media (`med_nom`,`med_type`,`med_size`,event_id) VALUES('$final_file','$file_type','$new_size','1') ";
+		$last_id = $conn->insert_id;
+		$sql1="INSERT INTO media (`med_nom`,`med_type`,`med_size`,`id`) VALUES('$final_file','$file_type','$new_size', $last_id) ";
 		$res1=mysqli_query($conn,$sql1);
 		echo "File sucessfully upload";
 		}
@@ -74,7 +76,7 @@ if(isset($_GET['supprimer'])){
 	$sql="DELETE FROM user WHERE id='$id'";
 	$res=mysqli_query($conn,$sql);
 
-	$sql1="DELETE FROM media WHERE med_nom='$final_file'";
+	$sql1="DELETE FROM media WHERE id='$id'";
 	$res1=mysqli_query($conn,$sql1);
 
 	$_SESSION['message']= "L'enregistrement choisi a été supprimé avec succès!";
@@ -105,19 +107,7 @@ if(isset($_GET['modifier'])){
 }
 
 if(isset($_POST['update'])){
-	$file1 = rand(1000,100000)."-".$_FILES['fileToUpload']['name'];
-	$file_loc = $_FILES['fileToUpload']['tmp_name'];
-	$file_size = $_FILES['fileToUpload']['size'];
-   	$file_type = $_FILES['fileToUpload']['type'];
-	$folder="../media/";
-   /* new file size in KB */
-   $new_size = $file_size/1024;  
-  /* new file size in KB */
-   
-   /* make file name in lower case */
-	$new_file_name = strtolower($file1);
-	/* make file name in lower case */
-	move_uploaded_file($file_loc, $folder . $final_file);
+
 	if(!empty($_POST['name'])&& !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email'])&& !empty($_POST['tel'])&& !empty($_POST['adresse'])){
 		//Get hidden input value
 		$id=$_POST['id']; 
@@ -126,19 +116,41 @@ if(isset($_POST['update'])){
 		$password=$_POST['password'];
 		$email=$_POST['email'];
 		$tel=$_POST['tel'];
-		$photo=$new_file_name;
+		//$photo=$new_file_name;
+		
 		$adresse=$_POST['adresse'];
+
+		$file_loc = $_FILES['fileToUpload']['tmp_name'];
+		$file_size = $_FILES['fileToUpload']['size'];
+	  $file_type = $_FILES['fileToUpload']['type'];
+	  $folder="../media/";
+	  $file1 = $folder.$_FILES['fileToUpload']['name'];
+	
+	  
+	 /* new file size in KB */
+	 $new_size = $file_size/1024;  
+	 /* new file size in KB */
+	  
+	  /* make file name in lower case */
+	   $new_file_name = strtolower($file1);
+	   /* make file name in lower case */
+	  
+	  $final_file=str_replace(' ','-',$new_file_name);
+	  $photo=$final_file;
 		
 		 //update query
-		$sql="UPDATE user SET username='$username', password='$password',name='$name', email='$email', tel='$tel', photo='$photo',adresse='$adresse' WHERE id='$id'";
-		$res=mysqli_query($conn,$sql);
+		$sql="UPDATE user SET username='$username', password='$password', name='$name', email='$email', tel='$tel', photo='$photo',adresse='$adresse' WHERE id='$id'";
+	
 
-		if(move_uploaded_file($file_loc,$folder.$final_file))
+		
+
+		if(move_uploaded_file($file_loc, $folder.$final_file)&& ($conn->query($sql) === TRUE))
 		{
-		$sql1="INSERT INTO media (`med_nom`,`med_type`,`med_size`,event_id) VALUES('$final_file','$file_type','$new_size','1') ";
+		$last_id = $conn->insert_id;
+		$sql1="UPDATE media SET med_nom='$final_file', med_type='$file_type', med_size='$new_size' where id='$id'";
+	
 		$res1=mysqli_query($conn,$sql1);
-		echo "File sucessfully upload";
-		}
+
 
 		$_SESSION['message']= "Le user choisi a été modifié avec succès!";
 		//Alert success message when data is successfully updated
@@ -153,5 +165,5 @@ if(isset($_POST['update'])){
     // tell the user record was updated
 	header("location: org.php"); 
 }
-
+}
 ?>

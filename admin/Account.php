@@ -1,25 +1,17 @@
-<?php
-
-session_start();// d�marrer une session
-
-$user= $_SESSION['username'];
-$name= $_SESSION['name'];
-$profile= $_SESSION['profil'];
-include("../inc\conn.inc.php");
-$req="select id from user where username='$user'"; 
-$res=mysqli_query($conn,$req);
-$id = $res;
-?>
 <!doctype html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--Latest compiled and minified Bootstrap CSS -->
+  <!--   <link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="icon/css/all.min.css"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous"> 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <title>account setting</title>
+    <title>CRUD org</title>
 	
 	<!-- custom css -->
 	<style type="text/css">
@@ -31,7 +23,8 @@ $id = $res;
   
   <body>
   
-    <?php require_once("acc_modif.php"); ?>
+    <?php require_once("acc_modif.php");
+	$path= "C:\\xampp\\htdocs\\simless\\media\\" ; ?>
 	
 	<div class="container">
 	<?php
@@ -42,49 +35,97 @@ $id = $res;
 				echo $_SESSION['message'];
 				unset($_SESSION['message']);
 			?>
-            
 		</div>
 	<?php endif ?>
 	</div>
+	<!-- HTML form for creating a new patient -->
+	<div class="container mt-2 mb-4 p-2 shadow ">
+	<?php
+				if($maj == true){
+				?>
+		<form action="acc_modif.php" method="POST" enctype="multipart/form-data">
+		<div class="form-row justify-content-center">
+			<!-- Add patient code, code_pat, to the hidden field value -->
+			<input type="hidden" name="id" value="<?php echo $id; ?>"/>
+			<div class="col-auto">
+			<input type="text" name="name" class="form-control" value="<?php if(isset($name)) echo $name; ?>" placeholder="Entrer un nom" />
+			</div>
+			<div class="col-auto">
+			<input type="text" name="username" class="form-control" value="<?php if(isset($username)) echo $username; ?>" placeholder="Entrer un username" />
+			</div>
+			<div class="col-auto">
+			<input type="password" name="password" class="form-control" value="<?php if(isset($password)) echo $password; ?>" placeholder="Entrer password" />
+			</div>
+			<div class="col-auto">
+			<input type="email" name="email" class="form-control" value="<?php if(isset($email)) echo $email; ?>" placeholder="Entrer un mail" />
+			</div>
+			<div class="col-auto">
+			<input type="tel" name="tel" class="form-control" value="<?php if(isset($tel)) echo $tel; ?>" placeholder="Entrer un tel" />
+			</div>
+			<div class="col-auto">
+			Select image to upload:
+			<input type="file" name="fileToUpload" id="fileToUpload" value="<?php if(isset($photo))  echo  $photo; ?>" placeholder="photo" />
+			 
+
+
+		</div>
+			<div class="col-auto">
+			<input type="text" name="adresse" class="form-control" value="<?php if(isset($adresse)) echo $adresse; ?>"  />
+			</div>
+			<div class="col-auto">
+			
+				
+				<button type="submit" name="update" class="btn btn-info">Mettre à jour</button>
+		
+			</div>
+			</div>
+		</form>
+		<?php	} ?>
+		</div>
 	<!-- PHP code to read records from the patient table -->
 	<?php
+	// include database connection
 	include("../inc/conn.inc.php");
-	// $result=mysqli_query($conn,"SELECT * FROM user where id=$id; ") or die("erreur");
+	// select query
+	$result=mysqli_query($conn,"SELECT * FROM user where profil='admin' ") or die("erreur");
 	?>
 	
 	<div class="container">
 	<!-- ADD HTML table that will display data from the database -->
 		<table class="table table-bordered table-striped">
-			<?php
-			//Retrieve contents from the patient table
-			//Loop through the list of records from this table
-			while($ligne=mysqli_fetch_array($result,MYSQLI_BOTH)){ ?>
-                <tr>
-                    <td>Account</td> <td colspan="2">Action</td> </tr>                  
-                    <td>username</td> <td><?php echo $ligne['username']; ?></td> <td colspan="2"><a href="acc_modif.php?modUN=<?php echo $ligne['id']; ?>" title="Modification enregistrement" data-toggle="tooltip"><span class="fa fa-pencil-alt"></span></a></td> </tr>
-                    <tr><td>password</td> <td><?php echo $ligne['password']; ?></td><td colspan="2"></td></tr>
-                    <tr><td>name</td> <td><?php echo $ligne['name']; ?></td> <td colspan="2"></td></tr>
-                    <tr><td>email</td> <td><?php echo $ligne['email']; ?></td> <td colspan="2"></td></tr>
-                    <tr><td>tel</td> <td><?php echo $ligne['tel']; ?>     </td> <td colspan="2"></td></tr>
-                    <tr><td>photo</td> <td><?php echo $ligne['photo']; ?></td> <td colspan="2"></td></tr>
-                    <tr><td>adresse </td> <td><?php echo $ligne['adresse']; ?></td> <td colspan="2"></td></tr>
-                    
-                
-                    
-					
-                    <a href="acc_modif.php?modifier=<?php echo $ligne['id']; ?>" title="Modification enregistrement" data-toggle="tooltip"><span class="fa fa-pencil-alt"></span></a>
-						<a href="Account.php?supprimer=<?php echo $ligne['id']; ?>" title="Suppression enregistrement" data-toggle="tooltip"><span class="fa fa-trash"></span></a>
-
+			<!-- Creating table heading -->
+			<thead>
+				<tr>
+					<th>name</th>
+					<th>username</th>
+					<th>password</th>
+					<th>email</th>
+					<th>tel</th>
+					<th>photo</th>
+					<th>adresse</th>
+					<th colspan="2">Action</th>
+				</tr>
+			<thead>
 			<!-- Creating table body -->
 			<tbody>
 		
-		
+		<?php
+			//Retrieve contents from the patient table
+			//Loop through the list of records from this table
+			while($ligne=mysqli_fetch_array($result,MYSQLI_BOTH)){ ?>
 				<!-- Creating new table row per record -->
-
+				<tr>
+					<td><?php echo $ligne['name']; ?></td>
+					<td><?php echo $ligne['username']; ?></td>
+					<td><?php echo $ligne['password']; ?></td>
+					<td><?php echo $ligne['email']; ?></td>
+					<td><?php echo $ligne['tel']; ?></td>
+					<td><?php echo '<img  style="width:100px;" src="'. $ligne['photo'].'">'?></td>
+					<td><?php echo $ligne['adresse']; ?></td>
+					<td style="width: 10% ">
 						<!-- Creating action icons for each record displayed in the table -->
-						<a href="acc_modif.php?modifier=<?php echo $ligne['id']; ?>" title="Modification enregistrement" data-toggle="tooltip"><span class="fa fa-pencil-alt"></span></a>
-						<a href="Account.php?supprimer=<?php echo $ligne['id']; ?>" title="Suppression enregistrement" data-toggle="tooltip"><span class="fa fa-trash"></span></a>
-					</td>
+						<a href="Account.php?modifier=<?php echo $ligne['id']; ?>" title="Modification enregistrement" data-toggle="tooltip"><span class="fa fa-pencil-alt"></span></a>
+				</td>
 				</tr>
 			<?php } ?>	
 			</tbody>	
