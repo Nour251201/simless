@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calender</title>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./fullcalendar/lib/main.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../fullcalendar/lib/main.min.css">
     <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../fullcalendar/lib/main.min.js"></script>
@@ -35,6 +35,15 @@
             border-width: 1px !important;
         }
     </style>
+    <?php
+	// include database connection
+	include("../inc/conn.inc.php");
+	// select query
+    
+	$result=mysqli_query($conn,"SELECT event_id,lib FROM event") or die("erreur");
+    //$ligne=mysqli_fetch_array($result,MYSQLI_BOTH);
+    //$ligne=mysqli_fetch_row($result1);
+	?>
 </head>
 
 <body class="bg-light">
@@ -52,6 +61,22 @@
                         <div class="container-fluid">
                             <form action="save_calender.php" method="post" id="schedule-form">
                                 <input type="hidden" name="id" value="">
+                                <div class="form-group mb-2">
+                                <label for="event" class="control-label">event</label></br>
+
+                                <?php
+                                $i=0;
+                                    while($ligne=mysqli_fetch_assoc($result))
+                                    { 
+                                        echo"<input type=\"radio\"  id=\"eventname$i\" name=\"eventname\" value=\"";
+                                        echo $ligne['event_id'];
+                                        echo"\" >";
+                                        $i=$i+1;
+                                        echo"<label for=".$ligne['lib'].">";
+                                        echo $ligne['lib'];
+                                        echo "</label></br>";
+                                    }?>
+                                </div>
                                 <div class="form-group mb-2">
                                     <label for="title" class="control-label">Title</label>
                                     <input type="text" class="form-control form-control-sm rounded-0" name="title" id="title" required>
@@ -100,6 +125,9 @@
                 <div class="modal-body rounded-0">
                     <div class="container-fluid">
                         <dl>
+                            <dt class="text-muted">Event</dt>
+                            <dd id="eventname" class="">
+                            </dd>
                             <dt class="text-muted">Title</dt>
                             <dd id="title" class="fw-bold fs-4"></dd>
                             <dt class="text-muted">Description</dt>

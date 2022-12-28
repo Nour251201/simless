@@ -6,7 +6,7 @@ session_start();
 include("../inc/conn.inc.php");
 
 //Set the $code variable to 0
-$code=0;
+$id=0;
 
 //Set the $maj variable to false
 $maj = false;
@@ -24,7 +24,7 @@ if(isset($_POST['enregistrer'])){
 		$fin=$_POST['date_fin'];
         $lieu=$_POST['lieu'];
 		//insert query
-		$sql="INSERT INTO event (`event_id`,`lib`,`description`,`date_deb`,`date_fin`,`lieu`) VALUES (``,`$lib`,`$des`,$deb,$fin,`$lieu`);";
+		$sql="INSERT INTO 'event' (`lib`,`description`,`date_deb`,`date_fin`,`lieu`) VALUES ('$lib','$des','$deb','$fin','$lieu')";
 		$res=mysqli_query($conn,$sql);
 		//Creating session messages and message types
 		$_SESSION['message']= "Un nouvel enregistrement a été ajouté avec succès!";
@@ -47,7 +47,7 @@ if(isset($_GET['supprimer'])){
 	$id=$_GET['supprimer'];
 	
 	//delete query
-	$sql="DELETE FROM event WHERE id='$event_id'";
+	$sql="DELETE FROM event WHERE event_id='$event_id'";
 	$res=mysqli_query($conn,$sql);
 	$_SESSION['message']= "L'enregistrement choisi a été supprimé avec succès!";
 	//Alert danger message when data is successfully deleted
@@ -64,9 +64,9 @@ if(isset($_GET['modifier'])){
 	$event_id=$_GET['modifier'];
 	//Set the $maj variable to true
 	$maj = true;
-	$sql="SELECT * FROM event WHERE id='$event_id'";
+	$sql="SELECT * FROM event WHERE event_id='$event_id'";
 	$result=mysqli_query($conn,$sql);
-	if (count($result)>0){
+	if ($result){
         $ligne=mysqli_fetch_assoc($result);
 		$lib=$_POST['lib'];
 		$des=$_POST['description'];

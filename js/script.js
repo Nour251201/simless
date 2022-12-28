@@ -5,7 +5,7 @@
         if (!!scheds) {
             Object.keys(scheds).map(k => {
                 var row = scheds[k]
-                events.push({ id: row.id, title: row.title, start: row.start_datetime, end: row.end_datetime , price: row.price , place: row.place });
+                events.push({ id: row.id, title: row.title, start: row.start_datetime, end: row.end_datetime , price: row.price , place: row.place ,eventname: row.event_id });
             })
         }
         var date = new Date()
@@ -27,6 +27,7 @@
                 var _details = $('#event-details-modal')
                 var id = info.event.id
                 if (!!scheds[id]) {
+                    _details.find('#eventname').text(scheds[id].event_id)
                     _details.find('#title').text(scheds[id].title)
                     _details.find('#description').text(scheds[id].description)
                     _details.find('#start').text(scheds[id].sdate)
@@ -60,6 +61,7 @@
                 var _form = $('#schedule-form')
                 console.log(String(scheds[id].start_datetime), String(scheds[id].start_datetime).replace(" ", "\\t"))
                 _form.find('[name="id"]').val(id)
+                _form.find('[name="eventname"]').val(scheds[id].event_id).check
                 _form.find('[name="title"]').val(scheds[id].title)
                 _form.find('[name="description"]').val(scheds[id].description)
                 _form.find('[name="start_datetime"]').val(String(scheds[id].start_datetime).replace(" ", "T"))

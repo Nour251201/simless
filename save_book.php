@@ -9,9 +9,9 @@ extract($_POST);
 $allday = isset($allday);
 
 if(empty($id)){
-    $sql = "INSERT INTO `calender` (`title`,`description`,`start_datetime`,`end_datetime`,`price`,`place`,`event_id`) VALUES ('$title','$description','$start_datetime','$end_datetime','$price','$place','$eventname')";
+    $sql = "INSERT INTO `calender` (`title`,`description`,`start_datetime`,`end_datetime`,`price`,`place`) VALUES ('$title','$description','$start_datetime','$end_datetime','$price','$place')";
 }else{
-    $sql = "UPDATE `calender` set `title` = '{$title}', `description` = '{$description}', `start_datetime` = '{$start_datetime}', `end_datetime` = '{$end_datetime}', `price` = '{$price}', `place` = '{$place}', `event_id` = '{$eventname}'  where `id` = '{$id}'";
+    $sql = "UPDATE `calender` set `title` = '{$title}', `description` = '{$description}', `start_datetime` = '{$start_datetime}', `end_datetime` = '{$end_datetime}', `price` = '{$price}', `place` = '{$place}' where `id` = '{$id}'";
 }
 $save = $conn->query($sql);
 if($save){
