@@ -22,7 +22,7 @@ include("inc/header.php");
     <h1>up comming events</h1>
 </div>
 <div id="calender">
-    <h1>calender</h1>
+    <a href="calender.php"><h1>calender</h1></a>
 </div> 
 <footer>
 <?php include("inc/footer.php"); ?>

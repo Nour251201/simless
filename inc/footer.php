@@ -21,7 +21,7 @@
   <span class="fas fa-circle fa-stack-2x "></span>
   <span class="fab fa-linkedin fa-stack-1x fa-inverse "></span>
   </span> 
-  <form action="action_page.php">
+  <form method="POST" action="inc/action_page.php">
   <div class="container">
     <h2>Subscribe to our Newsletter</h2>
     <p>Let's in touch</p>

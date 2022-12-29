@@ -84,7 +84,6 @@
 			<!-- Creating table heading -->
 			<thead>
 				<tr>				
-					<th>event_id</th>
 					<th>lib</th>
 					<th>description</th>
 					<th>date_deb</th>
